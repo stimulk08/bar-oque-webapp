@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %} Бронь столика № {{ reservation.table.number }} на {{ reservation.date }} в
+    {{ reservation.time }} {% endblock %}
+
+{% block body %}
+    <main>
+        <div id="reservation">
+            <span class="fs-4 fw-bold mb-2">Столик {{ reservation.table.number }}</span>
+            <span class="fs-5">Дата: {{ reservation.date }}</span>
+            <span class="fs-5">Время: {{ reservation.time }}</span>
+            <span class="fs-5">Продолжительность: {{ reservation.duration }}</span>
+            <span class="fs-5">Клиент: {{ reservation.client_name }}</span>
+            <button class="btn btn-danger mt-5" data-bs-toggle="modal" data-bs-target="#confirm_cancel_reservation">
+                Отменить
+            </button>
+        </div>
+    </main>
+{% endblock %}
+
+{% block modals %}
+    <div class="modal fade" id="confirm_cancel_reservation" tabindex="-1"
+         aria-labelledby="confirm_cancel_reservation_label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirm_cancel_reservation_label">Подтвердите отмену</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Вы уверены, что хотите отменить бронирование столика № {{ reservation.table.number }}
+                    на {{ reservation.date }} в {{ reservation.time }}?
+                </div>
+                <div class="modal-footer">
+                    <form method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Да</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Нет</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
